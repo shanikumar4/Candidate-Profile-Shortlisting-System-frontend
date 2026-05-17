@@ -81,9 +81,9 @@ const AIAnalysis = () => {
         <Link to="/shortlist" className="inline-flex items-center gap-1 text-sm font-semibold text-text-muted hover:text-navy-heading transition-colors mb-4">
           <ChevronLeft size={16} /> Back to Shortlist
         </Link>
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end gap-4">
           <div>
-            <h1 className="text-3xl font-black text-navy-heading tracking-[-0.03em] mb-1 flex items-center gap-3">
+            <h1 className="text-3xl font-black text-navy-heading tracking-[-0.03em] mb-1 flex items-center gap-3 flex-wrap">
               AI Shortlist Analysis
               <span className="bg-brand-light text-brand text-[11px] font-bold px-2 py-0.5 rounded-pill uppercase tracking-wider">GPT-4o</span>
             </h1>
@@ -91,7 +91,7 @@ const AIAnalysis = () => {
           </div>
           <button
             onClick={handleExport}
-            className="bg-white border-[1.5px] border-border text-navy-heading px-5 py-2 rounded-pill font-semibold text-sm hover:border-navy-heading transition-colors flex items-center gap-2"
+            className="w-full md:w-auto bg-white border-[1.5px] border-border text-navy-heading px-5 py-2 rounded-pill font-semibold text-sm hover:border-navy-heading transition-colors flex justify-center items-center gap-2"
           >
             <Download size={16} /> Export as .txt
           </button>
@@ -108,8 +108,8 @@ const AIAnalysis = () => {
           <h2 className="text-xl font-bold text-navy-heading mb-2">Ranked Candidates</h2>
           {analysis.rankings.map((rank) => (
             <div key={rank.rank} className="bg-white rounded-card p-5 border border-border relative overflow-hidden group">
-              <div className="flex gap-5">
-                <div className="flex flex-col items-center justify-center bg-gray-50 rounded-lg min-w-[60px] h-[60px] border border-gray-100">
+              <div className="flex flex-col sm:flex-row gap-5">
+                <div className="flex flex-row sm:flex-col items-center justify-center bg-gray-50 rounded-lg p-3 sm:p-0 sm:min-w-[60px] sm:h-[60px] border border-gray-100 gap-2 sm:gap-0">
                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Rank</span>
                   <span className={`text-2xl font-black ${rank.rank === 1 ? 'text-brand' : 'text-navy-heading'}`}>
                     #{rank.rank}

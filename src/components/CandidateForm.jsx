@@ -117,7 +117,7 @@ const CandidateForm = ({ onSubmit, isLoading }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-navy-heading text-white px-6 py-2.5 rounded-pill font-semibold text-sm flex items-center gap-2 hover:bg-black transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+          className="w-full md:w-auto bg-navy-heading text-white px-6 py-2.5 rounded-pill font-semibold text-sm flex justify-center items-center gap-2 hover:bg-black transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isLoading && <Loader2 size={16} className="animate-spin" />}
           {isLoading ? 'Adding...' : 'Add Candidate'}

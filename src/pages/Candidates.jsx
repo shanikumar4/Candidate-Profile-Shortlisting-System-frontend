@@ -95,14 +95,14 @@ const Candidates = () => {
     <div className="max-w-6xl mx-auto pb-12">
       <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: '', type: '' })} />
       
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-navy-heading tracking-[-0.03em] mb-1">Candidates</h1>
           <p className="text-text-muted text-sm">Manage your talent pool</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-navy-heading text-white px-5 py-2 rounded-pill font-semibold text-sm hover:bg-black transition-colors"
+          className="w-full md:w-auto bg-navy-heading text-white px-5 py-2 rounded-pill font-semibold text-sm hover:bg-black transition-colors"
         >
           {showForm ? 'Close Form' : 'Add Candidate'}
         </button>
@@ -110,29 +110,29 @@ const Candidates = () => {
 
       {showForm && <CandidateForm onSubmit={handleAddCandidate} isLoading={submitting} />}
 
-      <div className="bg-white rounded-t-card border-t border-x border-border flex items-center justify-between p-2">
-        <div className="flex p-1 bg-gray-100 rounded-pill">
+      <div className="bg-white rounded-t-card border-t border-x border-border flex flex-col md:flex-row items-center justify-between p-4 md:p-2 gap-4">
+        <div className="flex p-1 bg-gray-100 rounded-pill w-full md:w-auto overflow-x-auto hide-scrollbar">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-6 py-1.5 rounded-pill text-sm font-semibold transition-all ${activeTab === 'all' ? 'bg-white text-navy-heading shadow-sm' : 'text-gray-500 hover:text-navy-heading'}`}
+            className={`flex-1 md:flex-none px-6 py-1.5 rounded-pill text-sm font-semibold transition-all whitespace-nowrap ${activeTab === 'all' ? 'bg-white text-navy-heading shadow-sm' : 'text-gray-500 hover:text-navy-heading'}`}
           >
             All Candidates
           </button>
           <button
             onClick={() => setActiveTab('saved')}
-            className={`px-6 py-1.5 rounded-pill text-sm font-semibold transition-all ${activeTab === 'saved' ? 'bg-white text-navy-heading shadow-sm' : 'text-gray-500 hover:text-navy-heading'}`}
+            className={`flex-1 md:flex-none px-6 py-1.5 rounded-pill text-sm font-semibold transition-all whitespace-nowrap ${activeTab === 'saved' ? 'bg-white text-navy-heading shadow-sm' : 'text-gray-500 hover:text-navy-heading'}`}
           >
             Saved Shortlist
           </button>
         </div>
         
         {activeTab === 'all' && (
-          <div className="relative mr-2">
+          <div className="relative w-full md:w-auto md:mr-2">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search by name or skill..."
-              className="pl-9 pr-4 py-1.5 border border-border rounded-pill text-sm outline-none focus:border-brand w-64 text-text-body transition-colors bg-surface"
+              className="pl-9 pr-4 py-1.5 border border-border rounded-pill text-sm outline-none focus:border-brand w-full md:w-64 text-text-body transition-colors bg-surface"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

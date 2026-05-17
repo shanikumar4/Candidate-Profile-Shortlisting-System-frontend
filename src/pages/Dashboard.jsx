@@ -66,16 +66,16 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-navy-heading tracking-[-0.03em] mb-1">Dashboard</h1>
           <p className="text-text-muted text-sm">Overview of your candidate pipeline</p>
         </div>
-        <div className="flex gap-3">
-          <Link to="/candidates" className="bg-white border-[1.5px] border-navy-heading text-navy-heading px-5 py-2 rounded-pill font-semibold text-sm hover:bg-gray-50 transition-colors">
+        <div className="flex flex-wrap gap-3 w-full md:w-auto">
+          <Link to="/candidates" className="flex-1 md:flex-none text-center bg-white border-[1.5px] border-navy-heading text-navy-heading px-5 py-2 rounded-pill font-semibold text-sm hover:bg-gray-50 transition-colors">
             Add Candidate
           </Link>
-          <Link to="/shortlist" className="bg-navy-heading text-white px-5 py-2 rounded-pill font-semibold text-sm hover:bg-black transition-colors">
+          <Link to="/shortlist" className="flex-1 md:flex-none text-center bg-navy-heading text-white px-5 py-2 rounded-pill font-semibold text-sm hover:bg-black transition-colors">
             Run Shortlist
           </Link>
         </div>
