@@ -74,9 +74,9 @@ const AnalyticsPage = ({ onMenuClick }) => {
     <div className="page-enter">
       <Topbar title="Analytics" subtitle="Pipeline performance and insights" onMenuClick={onMenuClick} />
 
-      <div style={{ padding: '32px', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ maxWidth: 1400, margin: '0 auto', width: '100%' }}>
         {/* KPI Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginBottom: 32 }}>
+        <div className="responsive-grid-4" style={{ marginBottom: 28 }}>
           <KpiCard label="Total Candidates" value={overview?.total} color="var(--text-primary)" loading={loading} />
           <KpiCard label="Shortlisted" value={overview?.shortlisted} color="var(--accent)" loading={loading} />
           <KpiCard label="Avg Match Score" value={overview?.avgScore ? `${overview.avgScore}%` : null} color="var(--ai)" loading={loading} />
@@ -109,7 +109,7 @@ const AnalyticsPage = ({ onMenuClick }) => {
         </div>
 
         {/* Charts Row 1 */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }} className="analytics-grid-2">
           {/* Funnel */}
           <div className="card" style={{ padding: 24 }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 24 }}>Hiring Funnel</div>
@@ -158,6 +158,7 @@ const AnalyticsPage = ({ onMenuClick }) => {
             <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Time-to-Hire by Job</div>
             </div>
+          <div className="table-scroll-wrapper">
             <table className="hiq-table">
               <thead>
                 <tr>
@@ -183,6 +184,7 @@ const AnalyticsPage = ({ onMenuClick }) => {
                 ))}
               </tbody>
             </table>
+          </div>
           </div>
         )}
       </div>

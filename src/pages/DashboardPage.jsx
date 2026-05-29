@@ -59,7 +59,7 @@ const DashboardPage = ({ onMenuClick }) => {
     load();
   }, []);
 
-  const greeting = `Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, ${user?.name?.split(' ')[0]}`;
+  const greeting = user?.name ? `Welcome ${user.name.split(' ')[0]}` : 'Welcome';
 
   return (
     <div className="page-enter">
@@ -74,17 +74,17 @@ const DashboardPage = ({ onMenuClick }) => {
         }
       />
 
-      <div style={{ padding: '32px 32px', maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
         {/* Big Greeting */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
-          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.4px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.2 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.4px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.2 }}>
             {greeting}
           </h1>
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent-border)' }} />
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent-border)', flexShrink: 0 }} />
         </div>
 
         {/* KPI Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 20, marginBottom: 36 }}>
+        <div className="responsive-grid-4" style={{ marginBottom: 28 }}>
           <KpiCard label="Total Candidates" value={overview?.total} icon={Users} loading={loading} />
           <KpiCard label="Shortlisted" value={overview?.shortlisted} icon={Star} color="var(--accent)" loading={loading}
             sub={overview?.total ? `${Math.round((overview.shortlisted / overview.total) * 100)}% of pipeline` : null}
@@ -127,38 +127,40 @@ const DashboardPage = ({ onMenuClick }) => {
               <Button size="sm" onClick={() => navigate('/jobs')}>View Jobs</Button>
             </div>
           ) : (
-            <table className="hiq-table">
-              <thead>
-                <tr>
-                  <th>Candidate</th>
-                  <th>Stage</th>
-                  <th>Match Score</th>
-                  <th>Ghost Risk</th>
-                  <th style={{ width: 40 }}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {recent.map(c => (
-                  <tr key={c._id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/candidates/${c._id}`)}>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <CandidateAvatar name={c.name} size={32} shortlisted={c.savedToShortlist} />
-                        <div>
-                          <div className="primary-text">{c.name}</div>
-                          <div className="secondary-text">{c.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td><StageBadge stage={c.stage} /></td>
-                    <td style={{ minWidth: 160 }}><MatchScoreBar score={c.matchScore} size="sm" /></td>
-                    <td><GhostRiskIndicator risk={c.ghostRisk} /></td>
-                    <td style={{ textAlign: 'right' }}>
-                      <ArrowRight size={16} style={{ color: 'var(--text-muted)', transition: 'color 0.12s ease' }} className="row-arrow" />
-                    </td>
+            <div className="table-scroll-wrapper">
+              <table className="hiq-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Stage</th>
+                    <th>Match Score</th>
+                    <th>Ghost Risk</th>
+                    <th style={{ width: 40 }}></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {recent.map(c => (
+                    <tr key={c._id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/candidates/${c._id}`)}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <CandidateAvatar name={c.name} size={32} shortlisted={c.savedToShortlist} />
+                          <div>
+                            <div className="primary-text">{c.name}</div>
+                            <div className="secondary-text">{c.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><StageBadge stage={c.stage} /></td>
+                      <td style={{ minWidth: 140 }}><MatchScoreBar score={c.matchScore} size="sm" /></td>
+                      <td><GhostRiskIndicator risk={c.ghostRisk} /></td>
+                      <td style={{ textAlign: 'right' }}>
+                        <ArrowRight size={16} style={{ color: 'var(--text-muted)', transition: 'color 0.12s ease' }} className="row-arrow" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
         <style>{`.hiq-table tbody tr:hover .row-arrow { color: var(--accent) !important; }`}</style>

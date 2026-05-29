@@ -19,3 +19,6 @@ export const getUsers = () =>
 
 export const updateUser = (id, data) =>
   api.patch(`/auth/users/${id}`, data).then(r => r.data);
+
+export const updateProfile = (data) =>
+  api.patch(`/auth/profile`, data).then(r => r.data);

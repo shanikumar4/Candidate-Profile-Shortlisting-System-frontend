@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, NavLink, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import useAuthStore from './store/authStore';
+import {
+  LayoutDashboard, Users, Briefcase, BarChart2, Settings, Menu
+} from 'lucide-react';
 
 // Layout
 import Sidebar from './components/layout/Sidebar';
@@ -20,13 +23,55 @@ import PublicApplicationForm from './pages/PublicApplicationForm';
 import AcceptInvitePage from './pages/AcceptInvitePage';
 import SuperAdminDashboardPage from './pages/SuperAdminDashboardPage';
 
-const AppLayout = ({ children }) => {
+// Bottom nav items for mobile
+const BOTTOM_NAV = [
+  { to: '/dashboard', label: 'Home', icon: LayoutDashboard },
+  { to: '/jobs', label: 'Jobs', icon: Briefcase },
+  { to: '/candidates', label: 'People', icon: Users },
+  { to: '/analytics', label: 'Stats', icon: BarChart2 },
+  { to: '/settings', label: 'Settings', icon: Settings },
+];
+
+const BottomNav = ({ user }) => {
+  const location = useLocation();
+  const items = user?.role === 'superadmin'
+    ? [{ to: '/superadmin', label: 'Companies', icon: Briefcase }]
+    : BOTTOM_NAV;
+
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)' }}>
-      <Sidebar />
-      <main style={{ position: 'relative', zIndex: 10, marginLeft: 220, flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-        {typeof children === 'function' ? children({}) : children}
+    <nav className="bottom-nav" aria-label="Mobile navigation">
+      {items.map(({ to, label, icon: Icon }) => {
+        const isActive = location.pathname.startsWith(to);
+        return (
+          <NavLink
+            key={to}
+            to={to}
+            className={`bottom-nav-item${isActive ? ' active' : ''}`}
+          >
+            <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+            <span>{label}</span>
+          </NavLink>
+        );
+      })}
+    </nav>
+  );
+};
+
+const AppLayout = ({ children, user }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="app-layout">
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <main className="app-main">
+        {typeof children === 'function'
+          ? children({ onMenuClick: () => setSidebarOpen(true) })
+          : children}
       </main>
+      <BottomNav user={user} />
     </div>
   );
 };
@@ -64,11 +109,12 @@ function App() {
         toastOptions={{
           duration: 3500,
           style: {
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: 13,
             borderRadius: 8,
             border: '1px solid var(--border)',
-            boxShadow: 'var(--shadow-modal)',
+            background: 'var(--bg-surface)',
+            color: 'var(--text-primary)',
           },
           success: { iconTheme: { primary: 'var(--success)', secondary: '#fff' } },
           error: { iconTheme: { primary: 'var(--danger)', secondary: '#fff' } },
@@ -83,7 +129,7 @@ function App() {
         {/* SuperAdmin routes */}
         <Route path="/superadmin" element={
           <SuperAdminRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <SuperAdminDashboardPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </SuperAdminRoute>
@@ -93,7 +139,7 @@ function App() {
         <Route path="/dashboard" element={
           <ProtectedRoute>
             {user?.role === 'superadmin' ? <Navigate to="/superadmin" replace /> : (
-              <AppLayout>
+              <AppLayout user={user}>
                 {({ onMenuClick }) => <DashboardPage onMenuClick={onMenuClick} />}
               </AppLayout>
             )}
@@ -101,49 +147,49 @@ function App() {
         } />
         <Route path="/jobs" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <JobsListPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/jobs/:id" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <JobDetailPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/candidates" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <AllCandidatesPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/candidates/:id" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <CandidateProfilePage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/analytics" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <AnalyticsPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/bias" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <BiasReportPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>
         } />
         <Route path="/settings" element={
           <ProtectedRoute>
-            <AppLayout>
+            <AppLayout user={user}>
               {({ onMenuClick }) => <SettingsPage onMenuClick={onMenuClick} />}
             </AppLayout>
           </ProtectedRoute>

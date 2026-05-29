@@ -93,7 +93,7 @@ const SettingsPage = ({ onMenuClick }) => {
     <div className="page-enter">
       <Topbar title="Settings" subtitle="Team management and company configuration" onMenuClick={onMenuClick} />
 
-      <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 1000, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1000, margin: '0 auto', width: '100%' }}>
 
         {/* Company Settings */}
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>

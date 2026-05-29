@@ -70,18 +70,18 @@ const BiasReportPage = ({ onMenuClick }) => {
         onMenuClick={onMenuClick}
       />
 
-      <div style={{ padding: '32px', maxWidth: 1000, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ maxWidth: 1000, margin: '0 auto', width: '100%' }}>
         {/* Job Selector */}
-        <div className="card" style={{ padding: 32, marginBottom: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <div className="card" style={{ padding: 24, marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
             <Shield size={18} style={{ color: 'var(--accent)' }} />
             <h2 style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>Run Bias Analysis</h2>
           </div>
-          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 20, lineHeight: 1.6 }}>
             Select a job to analyze its shortlisted candidates for keyword proxy bias, experience-score mismatches,
             and Four-Fifths Rule compliance across experience tiers.
           </p>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
             {loadingJobs ? <Skeleton width={280} height={40} /> : (
               <select
                 value={selectedJob}

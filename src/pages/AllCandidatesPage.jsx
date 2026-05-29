@@ -77,9 +77,9 @@ const AllCandidatesPage = ({ onMenuClick }) => {
         }
       />
 
-      <div style={{ padding: '24px 32px', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ maxWidth: 1400, margin: '0 auto', width: '100%' }}>
         {/* Search + Filters */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
+        <div className="filter-row" style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
           <div style={{ flex: 1, minWidth: 240, position: 'relative' }}>
             <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -184,10 +184,9 @@ const AllCandidatesPage = ({ onMenuClick }) => {
           </div>
         )}
 
-        {/* Table */}
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
           {loading ? <SkeletonTable rows={6} /> : candidates.length === 0 ? (
-            <div style={{ padding: 80, textAlign: 'center' }}>
+            <div style={{ padding: 64, textAlign: 'center' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', justifyItems: 'center', width: 64, height: 64, borderRadius: '50%', background: 'var(--bg-elevated)', marginBottom: 20 }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </div>
@@ -195,72 +194,72 @@ const AllCandidatesPage = ({ onMenuClick }) => {
               <div style={{ fontSize: 14, color: 'var(--text-muted)' }}>Try adjusting your search or filters</div>
             </div>
           ) : (
-            <table className="hiq-table">
-              <thead>
-                <tr>
-                  <th style={{ width: 44, paddingLeft: 20 }}>
-                    <button onClick={toggleAll} aria-label="Select all" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}>
-                      {selected.length === candidates.length ? <CheckSquare size={16} style={{ color: 'var(--accent)' }} /> : <Square size={16} />}
-                    </button>
-                  </th>
-                  <th>Candidate</th>
-                  <th>Skills</th>
-                  <th>Stage</th>
-                  <th>Match Score</th>
-                  <th>Risk</th>
-                  <th>Exp</th>
-                  <th style={{ width: 40 }}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {candidates.map(c => (
-                  <tr
-                    key={c._id}
-                    className={selected.includes(c._id) ? 'selected' : ''}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/candidates/${c._id}`)}
-                  >
-                    <td onClick={e => { e.stopPropagation(); toggleSelect(c._id); }} style={{ paddingLeft: 20 }}>
-                      <button aria-label={`Select ${c.name}`} style={{ background: 'none', border: 'none', cursor: 'pointer', color: selected.includes(c._id) ? 'var(--accent)' : 'var(--text-muted)', display: 'flex' }}>
-                        {selected.includes(c._id) ? <CheckSquare size={16} /> : <Square size={16} />}
+            <div className="table-scroll-wrapper">
+              <table className="hiq-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: 44, paddingLeft: 20 }}>
+                      <button onClick={toggleAll} aria-label="Select all" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}>
+                        {selected.length === candidates.length ? <CheckSquare size={16} style={{ color: 'var(--accent)' }} /> : <Square size={16} />}
                       </button>
-                    </td>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <CandidateAvatar name={c.name} size={32} shortlisted={c.savedToShortlist} />
-                        <div>
-                          <div className="primary-text">
-                            {c.name}
-                          </div>
-                          <div className="secondary-text">{c.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                        {c.skills.slice(0, 3).map(s => (
-                          <span key={s} style={{ background: 'var(--bg-overlay)', color: 'var(--text-secondary)', border: '1px solid var(--border)', fontSize: 11, padding: '1px 7px', borderRadius: 4, fontFamily: 'var(--font-mono)' }}>{s}</span>
-                        ))}
-                        {c.skills.length > 3 && <span style={{ background: 'var(--bg-overlay)', color: 'var(--text-muted)', border: '1px solid var(--border)', fontSize: 11, padding: '1px 7px', borderRadius: 4, fontFamily: 'var(--font-mono)' }}>+{c.skills.length - 3}</span>}
-                      </div>
-                    </td>
-                    <td><StageBadge stage={c.stage} /></td>
-                    <td style={{ minWidth: 140 }}>
-                      <MatchScoreBar score={c.matchScore} size="sm" />
-                    </td>
-                    <td>
-                      <GhostRiskIndicator risk={c.ghostRisk} showLabel={false} />
-                    </td>
-                    <td>
-                      <span className="tabular" style={{ fontFamily: 'var(--font-mono)', fontSize: 13 }}>{c.experience}y</span>
-                    </td>
-                    <td style={{ textAlign: 'right' }}>
-                      <ArrowRight size={16} style={{ color: 'var(--text-muted)', transition: 'color 0.12s' }} className="row-arrow" />
-                    </td>
+                    </th>
+                    <th>Candidate</th>
+                    <th>Skills</th>
+                    <th>Stage</th>
+                    <th>Match Score</th>
+                    <th>Risk</th>
+                    <th>Exp</th>
+                    <th style={{ width: 40 }}></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {candidates.map(c => (
+                    <tr
+                      key={c._id}
+                      className={selected.includes(c._id) ? 'selected' : ''}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => navigate(`/candidates/${c._id}`)}
+                    >
+                      <td onClick={e => { e.stopPropagation(); toggleSelect(c._id); }} style={{ paddingLeft: 20 }}>
+                        <button aria-label={`Select ${c.name}`} style={{ background: 'none', border: 'none', cursor: 'pointer', color: selected.includes(c._id) ? 'var(--accent)' : 'var(--text-muted)', display: 'flex' }}>
+                          {selected.includes(c._id) ? <CheckSquare size={16} /> : <Square size={16} />}
+                        </button>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <CandidateAvatar name={c.name} size={32} shortlisted={c.savedToShortlist} />
+                          <div>
+                            <div className="primary-text">{c.name}</div>
+                            <div className="secondary-text">{c.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {c.skills.slice(0, 3).map(s => (
+                            <span key={s} style={{ background: 'var(--bg-overlay)', color: 'var(--text-secondary)', border: '1px solid var(--border)', fontSize: 11, padding: '1px 7px', borderRadius: 4, fontFamily: 'var(--font-mono)' }}>{s}</span>
+                          ))}
+                          {c.skills.length > 3 && <span style={{ background: 'var(--bg-overlay)', color: 'var(--text-muted)', border: '1px solid var(--border)', fontSize: 11, padding: '1px 7px', borderRadius: 4, fontFamily: 'var(--font-mono)' }}>+{c.skills.length - 3}</span>}
+                        </div>
+                      </td>
+                      <td><StageBadge stage={c.stage} /></td>
+                      <td style={{ minWidth: 140 }}>
+                        <MatchScoreBar score={c.matchScore} size="sm" />
+                      </td>
+                      <td>
+                        <GhostRiskIndicator risk={c.ghostRisk} showLabel={false} />
+                      </td>
+                      <td>
+                        <span className="tabular" style={{ fontFamily: 'var(--font-mono)', fontSize: 13 }}>{c.experience}y</span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <ArrowRight size={16} style={{ color: 'var(--text-muted)', transition: 'color 0.12s' }} className="row-arrow" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
         <style>{`.hiq-table tbody tr:hover .row-arrow { color: var(--accent) !important; }`}</style>

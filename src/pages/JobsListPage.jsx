@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Users, Clock, ArrowRight, Briefcase } from 'lucide-react';
+import { Plus, Users, Clock, ArrowRight, Briefcase, Link } from 'lucide-react';
 import Topbar from '../components/layout/Topbar';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
@@ -42,7 +42,12 @@ const JobsListPage = ({ onMenuClick }) => {
       setJobs([data.job, ...jobs]);
       setModalOpen(false);
       setForm({ title: '', department: '', requiredSkills: [], description: '' });
-      toast.success('Job created');
+      if (data.job.publicFormSlug) {
+        navigator.clipboard.writeText(`${window.location.origin}/apply/${data.job.publicFormSlug}`);
+        toast.success('Job created & link copied!');
+      } else {
+        toast.success('Job created!');
+      }
     } catch { toast.error('Creation failed'); }
     finally { setSubmitting(false); }
   };
@@ -78,13 +83,13 @@ const JobsListPage = ({ onMenuClick }) => {
         }
       />
 
-      <div style={{ padding: '32px', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
+      <div className="page-container" style={{ maxWidth: 1400, margin: '0 auto', width: '100%' }}>
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
+          <div className="responsive-grid-3" style={{ gap: 20 }}>
             {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
           </div>
         ) : jobs.length === 0 ? (
-          <div style={{ padding: 80, textAlign: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
+          <div style={{ padding: 64, textAlign: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 12 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'var(--bg-elevated)', marginBottom: 20 }}>
               <Briefcase size={28} style={{ color: 'var(--text-muted)' }} />
             </div>
@@ -95,7 +100,7 @@ const JobsListPage = ({ onMenuClick }) => {
             )}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 24 }}>
+          <div className="responsive-grid-3" style={{ gap: 20 }}>
             {jobs.map(j => (
               <div
                 key={j._id}
@@ -139,7 +144,23 @@ const JobsListPage = ({ onMenuClick }) => {
                     <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Users size={14} /> <span className="tabular">{j.candidateCount || 0}</span></span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Clock size={14} /> <span className="tabular">{new Date(j.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span></span>
                   </div>
-                  <ArrowRight size={16} style={{ color: 'var(--text-muted)' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(`${window.location.origin}/apply/${j.publicFormSlug}`);
+                        toast.success('Application link copied!');
+                      }}
+                      style={{ background: 'transparent', border: '1px solid var(--border)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-secondary)', fontSize: 12, padding: '4px 8px', borderRadius: 4, transition: 'all 0.15s' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-overlay)'; e.currentTarget.style.borderColor = 'var(--border-strong)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                      title="Copy Application Link"
+                    >
+                      <Link size={13} /> Link
+                    </button>
+                    <ArrowRight size={16} style={{ color: 'var(--text-muted)' }} />
+                  </div>
                 </div>
               </div>
             ))}
