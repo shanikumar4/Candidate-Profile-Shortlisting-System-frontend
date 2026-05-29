@@ -27,11 +27,6 @@ const LoginPage = () => {
     }
   };
 
-  const fillDemo = () => {
-    setEmail('admin@hireiq.app');
-    setPassword('HireIQ@2024');
-  };
-
   return (
     <div style={{ fontFamily: "'Inter', sans-serif" }}>
       <style>{`
@@ -206,13 +201,6 @@ const LoginPage = () => {
           box-shadow: 0 2px 8px rgba(29, 202, 116, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
-        /* Demo Block */
-        .demo-block {
-          margin-top: 24px;
-          background: #1e2a3d;
-          border-radius: 10px;
-          padding: 14px 16px;
-        }
       `}</style>
       
       <div className="login-layout">
@@ -295,26 +283,6 @@ const LoginPage = () => {
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
             </form>
-
-            <div className="demo-block">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: '#525d73', letterSpacing: '0.05em' }}>
-                  DEMO ACCOUNT
-                </span>
-                <span 
-                  onClick={fillDemo} 
-                  style={{ fontSize: 13, fontWeight: 600, color: 'white', cursor: 'pointer', transition: 'opacity 0.2s' }}
-                  onMouseEnter={e => e.target.style.opacity = 0.8}
-                  onMouseLeave={e => e.target.style.opacity = 1}
-                >
-                  Fill Demo
-                </span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 13, color: '#8b93a7', fontFamily: 'monospace' }}>admin@hireiq.app</span>
-                <span style={{ fontSize: 13, color: '#8b93a7', fontFamily: 'monospace' }}>HireIQ@2024</span>
-              </div>
-            </div>
 
           </div>
         </div>
