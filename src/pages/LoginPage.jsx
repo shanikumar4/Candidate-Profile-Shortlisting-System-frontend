@@ -19,7 +19,11 @@ const LoginPage = () => {
     try {
       const data = await authApi.login(email, password);
       login(data.token, data.user);
-      navigate('/dashboard');
+      if (data.user.role === 'superadmin') {
+        navigate('/superadmin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       toast.error(err.response?.data?.error || 'Login failed');
     } finally {
