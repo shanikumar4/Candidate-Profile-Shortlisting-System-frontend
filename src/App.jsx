@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, NavLink, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import useAuthStore from './store/authStore';
+import { warmServer } from './api/index';
 import {
   LayoutDashboard, Users, Briefcase, BarChart2, Settings, Menu
 } from 'lucide-react';
@@ -101,6 +102,9 @@ const SuperAdminRoute = ({ children }) => {
 
 function App() {
   const { user } = useAuthStore();
+
+  // Pre-warm the Render free-tier backend silently on first mount
+  useEffect(() => { warmServer(); }, []);
 
   return (
     <BrowserRouter>
