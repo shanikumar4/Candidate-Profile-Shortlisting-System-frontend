@@ -54,6 +54,8 @@ const JobsListPage = ({ onMenuClick }) => {
 
   const handleGenerateJD = async () => {
     if (!form.title) return toast.error('Enter a job title first');
+    // Clear existing description immediately so user sees it's refreshing
+    setForm(f => ({ ...f, description: '' }));
     setGenerating(true);
     try {
       const res = await generateJDPreview(form.title, form.requiredSkills);
@@ -61,12 +63,17 @@ const JobsListPage = ({ onMenuClick }) => {
       setForm(f => ({ 
         ...f, 
         description: generated.description || '', 
-        requiredSkills: generated.requiredSkills || f.requiredSkills 
+        requiredSkills: generated.requiredSkills?.length ? generated.requiredSkills : f.requiredSkills,
       }));
-      toast.success('JD Generated');
+      if (res.warning) {
+        toast('JD Generated (fallback mode)', { icon: '⚠️' });
+      } else {
+        toast.success('JD Generated ✓');
+      }
     } catch { toast.error('Generation failed'); }
     finally { setGenerating(false); }
   };
+
 
   return (
     <div className="page-enter">
