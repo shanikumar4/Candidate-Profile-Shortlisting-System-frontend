@@ -301,7 +301,16 @@ const CandidateProfilePage = ({ onMenuClick }) => {
                   variant="ghost"
                   size="sm"
                   icon={<FileText size={14} />}
-                  onClick={() => window.open(c.resumeUrl, '_blank')}
+                  onClick={() => {
+                    // resumeUrl is stored as '/uploads/...' — must resolve to the backend, not frontend
+                    const backendBase = import.meta.env.VITE_API_URL
+                      ? import.meta.env.VITE_API_URL.replace('/api', '')
+                      : '';
+                    const fullUrl = c.resumeUrl.startsWith('http')
+                      ? c.resumeUrl
+                      : `${backendBase}${c.resumeUrl}`;
+                    window.open(fullUrl, '_blank');
+                  }}
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
                   View Resume
