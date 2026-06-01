@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
-  timeout: 20000, // 20s — server has a 15s Gemini timeout so fallback fires first
+  timeout: 28000, // 28s — server aborts Gemini at 15s and sends fallback; gives ~13s for Render proxy overhead
 });
 
 // Attach JWT token
